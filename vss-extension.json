@@ -1,0 +1,42 @@
+{
+  "manifestVersion": 1,
+  "id": "PowerShellCommands",
+  "name": "PowerShell Commands",
+  "version": "1.0.0.0",
+  "publisher": "ShahyadS",
+  "description": "Provides each popular powershell command as a build and release task",
+  "public": true,
+  "icons": {
+    "default": "extension-icon.png"
+  },
+  "categories": [ "Build and release" ],
+  "tags": [
+    "download",
+    "artifact",
+    "package"
+  ],
+  "files": [
+    {
+      "path": "CopyItem"
+    }
+  ],
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "content": {
+    "details": {
+      "path": "overview.md"
+    }
+  },
+  "contributions": [
+    {
+      "id": "CopyItem",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [ "ms.vss-distributed-task.tasks" ],
+      "description": "Used to simplify inline scripts",
+      "properties": { "name": "CopyItem" }
+    }
+  ]
+}
