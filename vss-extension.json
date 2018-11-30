@@ -18,6 +18,9 @@
   "files": [
     {
       "path": "CopyItem"
+    },
+    {
+      "path": "StartStopService"
     }
   ],
   "targets": [
@@ -35,8 +38,15 @@
       "id": "CopyItem",
       "type": "ms.vss-distributed-task.task",
       "targets": [ "ms.vss-distributed-task.tasks" ],
-      "description": "Used to simplify inline scripts",
+      "description": "Used to simplify inline scripts specially on remote servers",
       "properties": { "name": "CopyItem" }
+    },
+    {
+      "id": "StartStopService",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [ "ms.vss-distributed-task.tasks" ],
+      "description": "Used to simplify inline scripts specially on remote servers",
+      "properties": { "name": "StartStopService" }
     }
   ]
 }
