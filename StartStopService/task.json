@@ -62,7 +62,7 @@
   ],
   "execution": {
     "PowerShell": {
-      "target": "$(currentDirectory)\\task.ps1",
+      "target": "$(currentDirectory)\\StartStopService.ps1",
       "argumentFormat": "",
       "workingDirectory": "$(currentDirectory)"
     }

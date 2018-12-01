@@ -125,7 +125,7 @@ try
 		$params.Add('WhatIf', $true)
 	}
 	
-	Copy-Item @params -Path $Path -Destination $Destination -Confirm
+	Copy-Item @params -Path $Path -Destination $Destination
 }
 catch
 {

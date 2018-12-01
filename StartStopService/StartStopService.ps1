@@ -28,16 +28,26 @@ $scriptBlock={
             "Start"   
 			{
 				if ($service.status -ne "Running") 
+				{
 					Start-Service -Name $ServiceName
+					write-host "the service '$ServiceName' is started successfuly"
+				}
 				else
-					write-host "the service is already Running"
+				{
+					write-host "the service '$ServiceName' is already running"
+				}
 			}
             "Stop"    
 			{
-				if($service.status -ne "Stopped") 
+				if($service.status -ne "Stopped")
+				{
 					Stop-Service -Name $ServiceName
+					write-host "the service '$ServiceName' is stopped successfuly"
+				}
 				else
-					write-host "the service is already Stopped"
+				{
+					write-host "the service '$ServiceName' is already stopped"
+				}
 			}
         }
     }    
