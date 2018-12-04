@@ -9,7 +9,7 @@
   "icons": {
     "default": "extension-icon.png"
   },
-  "categories": [ "Build and release" ],
+  "categories": [ "Azure Pipelines" ],
   "tags": [
     "download",
     "artifact",
