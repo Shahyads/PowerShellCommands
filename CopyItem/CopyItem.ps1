@@ -134,24 +134,49 @@ try
 	}
 	if ($IsCopyFromAgentMachine -or $IsCopyToAgentMachine)
 	{
-		Copy-Item @params -Path $Path -Destination $Destination
+		Copy-Item @params -Path $Path -Destination $Destination -verbose
 	}
 	else # '-FromSession' and '-ToSession' are mutually exclusive and cannot be specified at the same time.
 	{
 		$Scriptblock = {
-		param($Path,$Destination,$TargetMachineName,$TargetMachineUserName,$TargetMachinePassword,$params); 
-		Write-Host "PSVersion:" $psversiontable.PSVersion.Major
-		$ToPasswd = ConvertTo-SecureString $TargetMachinePassword -AsPlainText -Force
-		$ToCreds = New-Object System.Management.Automation.PSCredential ($TargetMachineUserName, $ToPasswd)
-		$ToSession= new-pssession $TargetMachineName -credential $ToCreds
-		$params.Add('ToSession', $ToSession)
-		Copy-Item @params -Path $Path -Destination $Destination
+			param($Path,$Destination,$TargetMachineName,$TargetMachineUserName,$TargetMachinePassword,$params); 
+			Write-Host "PSVersion:" $psversiontable.PSVersion.Major
+			$to  =([System.Net.Dns]::GetHostAddresses($TargetMachineName) | where-object{$_.Address -ne $null} | sort-object{$_.Address} -Descending).IPAddressToString
+			$here=([System.Net.Dns]::GetHostAddresses("$env:computername")| where-object{$_.Address -ne $null} | sort-object{$_.Address} -Descending).IPAddressToString
+			Write-host "to:"
+			Write-host $to
+			Write-host "here:"
+			Write-host $here
+			if (($to -join "++++") -ne ($here -join "++++"))
+			{
+				$ToPasswd = ConvertTo-SecureString $TargetMachinePassword -AsPlainText -Force
+				$ToCreds = New-Object System.Management.Automation.PSCredential ($TargetMachineUserName, $ToPasswd)
+				
+				$ToSession= new-pssession $TargetMachineName -credential $ToCreds 
+				$params.Add('ToSession', $ToSession)
+			}
+			else 
+			{
+				Write-host "SourceMachine and TargetMachine are the same"
+			}
+			try
+			{
+				Copy-Item @params -Path $Path -Destination $Destination -verbose
+			}
+			catch
+			{
+				get-pssession | remove-pssession
+				Write-Error $_.Exception.Message
+				exit 1
+			}
 		}
 		Invoke-Command -Session $FromSession -Scriptblock $Scriptblock -ArgumentList $Path,$Destination,$TargetMachineName,$TargetMachineUserName,$TargetMachinePassword,$params
 	}
+    get-pssession | remove-pssession
 }
 catch
 {
+    get-pssession | remove-pssession
     Write-Error $_.Exception.Message
     exit 1
 }   
