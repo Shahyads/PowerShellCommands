@@ -46,6 +46,8 @@ try
 	Write-Host "Recurse: $($Recurse)"
 	Write-Host "PassThru: $($PassThru)"
 	Write-Host "WhatIf: $($WhatIf)"
+	
+	Write-Host "PSVersion:" $psversiontable.PSVersion.Major
 
    # Stop the script on error
 	$ErrorActionPreference = "Stop"
@@ -81,7 +83,10 @@ try
 		$FromPasswd = ConvertTo-SecureString $SourceMachinePassword -AsPlainText -Force
 		$FromCreds = New-Object System.Management.Automation.PSCredential ($SourceMachineUserName, $FromPasswd)
 		$FromSession= new-pssession $SourceMachineName -credential $FromCreds
-		$params.Add('FromSession', $FromSession)
+		if ($IsCopyToAgentMachine) # '-FromSession' and '-ToSession' are mutually exclusive and cannot be specified at the same time.
+		{
+			$params.Add('FromSession', $FromSession)
+		}
 	}
 	if (!$IsCopyToAgentMachine)
 	{
@@ -99,10 +104,13 @@ try
 		{
 			Throw "Please provide a password for target machine"
 		}
-		$ToPasswd = ConvertTo-SecureString $TargetMachinePassword -AsPlainText -Force
-		$ToCreds = New-Object System.Management.Automation.PSCredential ($TargetMachineUserName, $ToPasswd)
-		$ToSession= new-pssession $TargetMachineName -credential $ToCreds
-		$params.Add('ToSession', $ToSession)
+		if ($IsCopyFromAgentMachine) # '-FromSession' and '-ToSession' are mutually exclusive and cannot be specified at the same time.
+		{
+			$ToPasswd = ConvertTo-SecureString $TargetMachinePassword -AsPlainText -Force
+			$ToCreds = New-Object System.Management.Automation.PSCredential ($TargetMachineUserName, $ToPasswd)
+			$ToSession= new-pssession $TargetMachineName -credential $ToCreds
+			$params.Add('ToSession', $ToSession)
+		}
 	}
 	if ($IsForce)
 	{
@@ -124,11 +132,64 @@ try
 	{
 		$params.Add('WhatIf', $true)
 	}
-	
-	Copy-Item @params -Path $Path -Destination $Destination
+	if ($Filter -ne $null -and $Filter.Trim() -ne "")
+	{
+		$params.Add('Filter', $Filter)
+	}
+	if ($Include -ne $null -and $Include.Trim() -ne "")
+	{
+		$params.Add('Include', $Include)
+	}
+	if ($Exclude -ne $null -and $Exclude.Trim() -ne "")
+	{
+		$params.Add('Exclude', $Exclude)
+	}
+
+	if ($IsCopyFromAgentMachine -or $IsCopyToAgentMachine)
+	{
+		Copy-Item @params -Path $Path -Destination $Destination -verbose
+	}
+	else # '-FromSession' and '-ToSession' are mutually exclusive and cannot be specified at the same time.
+	{
+		$Scriptblock = {
+			param($Path,$Destination,$TargetMachineName,$TargetMachineUserName,$TargetMachinePassword,$params); 
+			Write-Host "PSVersion:" $psversiontable.PSVersion.Major
+			$to  =([System.Net.Dns]::GetHostAddresses($TargetMachineName) | where-object{$_.Address -ne $null} | sort-object{$_.Address} -Descending).IPAddressToString
+			$here=([System.Net.Dns]::GetHostAddresses("$env:computername")| where-object{$_.Address -ne $null} | sort-object{$_.Address} -Descending).IPAddressToString
+			Write-host "to:"
+			Write-host $to
+			Write-host "here:"
+			Write-host $here
+			if (($to -join "++++") -ne ($here -join "++++"))
+			{
+				$ToPasswd = ConvertTo-SecureString $TargetMachinePassword -AsPlainText -Force
+				$ToCreds = New-Object System.Management.Automation.PSCredential ($TargetMachineUserName, $ToPasswd)
+				
+				$ToSession= new-pssession $TargetMachineName -credential $ToCreds 
+				$params.Add('ToSession', $ToSession)
+			}
+			else 
+			{
+				Write-host "SourceMachine and TargetMachine are the same"
+			}
+			try
+			{
+				Copy-Item @params -Path $Path -Destination $Destination -verbose
+			}
+			catch
+			{
+				get-pssession | remove-pssession
+				Write-Error $_.Exception.Message
+				exit 1
+			}
+		}
+		Invoke-Command -Session $FromSession -Scriptblock $Scriptblock -ArgumentList $Path,$Destination,$TargetMachineName,$TargetMachineUserName,$TargetMachinePassword,$params
+	}
+    get-pssession | remove-pssession
 }
 catch
 {
+    get-pssession | remove-pssession
     Write-Error $_.Exception.Message
     exit 1
 }   

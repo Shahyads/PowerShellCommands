@@ -1,5 +1,5 @@
 ##PowerShell Commands
-Allows users to run powershell commands as a simple Task. 
+Allows users to run popular powershell commands as a simple Task. 
  
 ##Tasks Include
 1. Copy-Item
@@ -7,3 +7,6 @@ Allows users to run powershell commands as a simple Task.
 	It doesn't need admin priviledge or share folder on the target machine.
 2. Start-Service
 3. Stop-Service
+4. Remove-Item
+5. Start-ScheduledTask
+6. Stop-ScheduledTask

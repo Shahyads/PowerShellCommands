@@ -1,10 +1,11 @@
 {
-  "id": "b863ba09-b801-4ba8-95dd-bf350ef3ad6b",
-  "name": "CopyItem",
-  "friendlyName": "Copy-Item",
-  "description": "This task allows users to copy a file using powershell command Copy-Item. It doesn't need admin privilege or share folder on the target machine.",
+  // {}
+  "id": "3b70f2fe-11c1-44be-b182-863ddd16408a",
+  "name": "RemoveItem",
+  "friendlyName": "Remove-Item",
+  "description": "This task allows users to Remove a file using powershell command Remove-Item. It doesn't need admin privilege or share folder on the target machine.",
   "author": "Shahyad Sharghi",
-  "helpMarkDown": "Used to Copy files",
+  "helpMarkDown": "Used to Remove files",
   "category": "Utility",
   "visibility": [
     "Build",
@@ -14,17 +15,12 @@
   "version": {
     "Major": "1",
     "Minor": "0",
-    "Patch": "2"
+    "Patch": "0"
   },
   "groups": [
     {
       "name": "SourceGroup",
       "displayName": "Source",
-      "isExpanded": true
-    },
-    {
-      "name": "DestinationGroup",
-      "displayName": "Destination",
       "isExpanded": true
     },
     {
@@ -44,8 +40,8 @@
       "helpMarkDown": "path"
     },
     {
-      "name": "CopyFromAgentMachine",
-      "label": "Copy From Agent Machine",
+      "name": "RemoveFromAgentMachine",
+      "label": "Remove From Agent Machine",
       "type": "boolean",
       "defaultValue": true,
       "groupname": "SourceGroup"
@@ -56,7 +52,7 @@
       "type": "string",
       "defaultValue": "",
       "groupname": "SourceGroup",
-      "visibleRule": "CopyFromAgentMachine = false"
+      "visibleRule": "RemoveFromAgentMachine = false"
     },
     {
       "name": "SourceMachineUserName",
@@ -64,7 +60,7 @@
       "type": "string",
       "defaultValue": "",
       "groupname": "SourceGroup",
-      "visibleRule": "CopyFromAgentMachine = false"
+      "visibleRule": "RemoveFromAgentMachine = false"
     },
     {
       "name": "SourceMachinePassword",
@@ -72,46 +68,7 @@
       "type": "string",
       "defaultValue": "",
       "groupname": "SourceGroup",
-      "visibleRule": "CopyFromAgentMachine = false"
-    },
-    {
-      "name": "Destination",
-      "label": "-Destination",
-      "type": "string",
-      "defaultValue": "",
-      "required": true,
-      "groupname": "DestinationGroup"
-    },
-    {
-      "name": "CopyToAgentMachine",
-      "label": "Copy To Agent Machine",
-      "type": "boolean",
-      "defaultValue": true,
-      "groupname": "DestinationGroup"
-    },
-    {
-      "name": "TargetMachineName",
-      "label": "Machine",
-      "type": "string",
-      "defaultValue": "",
-      "groupname": "DestinationGroup",
-      "visibleRule": "CopyToAgentMachine = false"
-    },
-    {
-      "name": "TargetMachineUserName",
-      "label": "UserName",
-      "type": "string",
-      "defaultValue": "",
-      "groupname": "DestinationGroup",
-      "visibleRule": "CopyToAgentMachine = false"
-    },
-    {
-      "name": "TargetMachinePassword",
-      "label": "Password",
-      "type": "string",
-      "defaultValue": "",
-      "groupname": "DestinationGroup",
-      "visibleRule": "CopyToAgentMachine = false"
+      "visibleRule": "RemoveFromAgentMachine = false"
     },
     {
       "name": "Filter",
@@ -135,13 +92,6 @@
       "groupname": "OptionsGroup"
     },
     {
-      "name": "Container",
-      "label": "-Container",
-      "type": "boolean",
-      "defaultValue": false,
-      "groupname": "OptionsGroup"
-    },
-    {
       "name": "Force",
       "label": "-Force",
       "type": "boolean",
@@ -156,13 +106,6 @@
       "groupname": "OptionsGroup"
     },
     {
-      "name": "PassThru",
-      "label": "-PassThru",
-      "type": "boolean",
-      "defaultValue": false,
-      "groupname": "OptionsGroup"
-    },
-    {
       "name": "WhatIf",
       "label": "-WhatIf",
       "type": "boolean",
@@ -170,10 +113,10 @@
       "groupname": "OptionsGroup"
     }
   ],
-  "instanceNameFormat": "Copy",
+  "instanceNameFormat": "Remove",
   "execution": {
     "PowerShell": {
-      "target": "$(currentDirectory)\\CopyItem.ps1",
+      "target": "$(currentDirectory)\\RemoveItem.ps1",
       "argumentFormat": "",
       "workingDirectory": "$(currentDirectory)"
     }

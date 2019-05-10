@@ -20,7 +20,7 @@ param(
 $scriptBlock={
     param($Action,$ServiceName)
 
-    $service = Get-Service | Where-Object {$_.Name -eq $ServiceName} | Select-Object -First 1
+    $service = Get-Service $ServiceName
 
     if ($service -ne $null)
     {

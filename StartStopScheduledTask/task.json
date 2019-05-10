@@ -1,8 +1,8 @@
 {
-  "id": "67971e48-2825-4337-a4ba-dac1794cb3a8",
-  "name": "StartStopService",
-  "friendlyName": "Stop-Service or Start-Service powershell command",
-  "description": "This task allows users to start/stop windows servie using powershell command Stop-Service or Start-Service. It doesn't need admin privilege or share folder on the target machine.",
+  "id": "292d1dd6-6c61-4efb-89dd-5c280974407e",
+  "name": "StartStopScheduledTask",
+  "friendlyName": "Stop-ScheduledTask or Start-ScheduledTask powershell command",
+  "description": "This task allows users to start/stop windows Scheduled Task using powershell command Stop-ScheduledTask or Start-ScheduledTask. It doesn't need admin privilege or share folder on the target machine.",
   "category": "Deploy",
   "visibility": [
     "Build",
@@ -12,22 +12,22 @@
   "version": {
     "Major": 1,
     "Minor": 0,
-    "Patch": 1
+    "Patch": 0
   },
-  "instanceNameFormat": "Start/Stop Service $(ServiceName)",
+  "instanceNameFormat": "Start/Stop Scheduled Task $(TaskName)",
   "inputs": [
     {
-      "name": "ServiceName",
+      "name": "TaskName",
       "type": "string",
-      "label": "Service Name",
+      "label": "Task Name",
       "defaultValue": "",
       "required": true,
-      "helpMarkDown": "The name of a service.(Do not use the display name)"
+      "helpMarkDown": "The name of a Task in Windows Task Scheduler"
     },
     {
       "name": "Action",
       "type": "pickList",
-      "label": "Action for the service",
+      "label": "Action for the Task",
       "required": true,
       "helpMarkDown": "Type of the action: Start, Stop",
       "options": {
@@ -57,12 +57,12 @@
       "label": "semicolon separated list of machine names",
       "defaultValue": "",
       "required": true,
-      "helpMarkDown": "Name of the machines where the service is there (e.g. serverName1;serverName2;serverName3)"
+      "helpMarkDown": "Name of the machines on which the task is created (e.g. serverName1;serverName2;serverName3)"
     }
   ],
   "execution": {
     "PowerShell": {
-      "target": "$(currentDirectory)\\StartStopService.ps1",
+      "target": "$(currentDirectory)\\StartStopScheduledTask.ps1",
       "argumentFormat": "",
       "workingDirectory": "$(currentDirectory)"
     }
