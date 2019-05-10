@@ -21,6 +21,12 @@
     },
     {
       "path": "StartStopService"
+    },
+    {
+      "path": "RemoveItem"
+    },
+    {
+      "path": "StartStopScheduledTask"
     }
   ],
   "targets": [
