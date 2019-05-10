@@ -132,6 +132,19 @@ try
 	{
 		$params.Add('WhatIf', $true)
 	}
+	if ($Filter -ne $null -and $Filter.Trim() -ne "")
+	{
+		$params.Add('Filter', $Filter)
+	}
+	if ($Include -ne $null -and $Include.Trim() -ne "")
+	{
+		$params.Add('Include', $Include)
+	}
+	if ($Exclude -ne $null -and $Exclude.Trim() -ne "")
+	{
+		$params.Add('Exclude', $Exclude)
+	}
+
 	if ($IsCopyFromAgentMachine -or $IsCopyToAgentMachine)
 	{
 		Copy-Item @params -Path $Path -Destination $Destination -verbose
