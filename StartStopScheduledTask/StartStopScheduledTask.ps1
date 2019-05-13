@@ -20,8 +20,9 @@ param(
 $scriptBlock={
     param($Action,$TaskName)
 
-    $scheduledTask = Get-ScheduledTask $TaskName
-
+	$scheduledTask = Get-ScheduledTask $TaskName
+	write-host "resolved task name: $($scheduledTask.TaskName)"
+	write-host "resolved task state: $($scheduledTask.state)"
     if ($scheduledTask -ne $null)
     {
         switch ($Action){
@@ -29,7 +30,7 @@ $scriptBlock={
 			{
 				if ($scheduledTask.state -ne "Running") 
 				{
-					Start-ScheduledTask -Name $TaskName
+					Start-ScheduledTask -TaskName $TaskName
 					write-host "the scheduled task '$TaskName' is started successfuly"
 				}
 				else
@@ -41,12 +42,12 @@ $scriptBlock={
 			{
 				if($scheduledTask.state -ne "Ready")
 				{
-					Stop-ScheduledTask -Name $TaskName
+					Stop-ScheduledTask -TaskName $TaskName
 					write-host "the scheduled task '$TaskName' is stopped successfuly"
 				}
 				else
 				{
-					write-host "the scheduled task '$TaskName' is already stopped"
+					write-host "the scheduled task '$TaskName' has already been stopped"
 				}
 			}
         }
@@ -64,5 +65,5 @@ $MachineNameslist  = $MachineNameslist  -replace " ",""
 $Machines = $MachineNameslist  -split ";"
 foreach($machine in $Machines) 
 {
-	Invoke-Command -ComputerName $machine -Credential $authCredentials -ScriptBlock $scriptBlock -ArgumentList $Action, $ServiceName
+	Invoke-Command -ComputerName $machine -Credential $authCredentials -ScriptBlock $scriptBlock -ArgumentList $Action, $TaskName
 }

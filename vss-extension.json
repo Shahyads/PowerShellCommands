@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "id": "PowerShellCommands",
   "name": "PowerShell Commands",
-  "version": "1.0.1.4",
+  "version": "1.0.1.5",
   "publisher": "ShahyadS",
   "description": "Provides each popular powershell command as a build and release task",
   "public": true,
