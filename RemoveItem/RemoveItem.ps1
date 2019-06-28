@@ -62,9 +62,15 @@ try
 		{
 			Throw "Please provide a password for source machine"
 		}
-		$FromPasswd = ConvertTo-SecureString $SourceMachinePassword -AsPlainText -Force
-		$FromCreds = New-Object System.Management.Automation.PSCredential ($SourceMachineUserName, $FromPasswd)
-		$FromSession= new-pssession $SourceMachineName -credential $FromCreds
+		$machines = $SourceMachineName.split(',') | ForEach-Object { if ($_ -and $_.trim()) { $_.trim() } }
+		$FromSessions = @()
+		foreach($machine in $machines)
+		{
+			$FromPasswd = ConvertTo-SecureString $SourceMachinePassword -AsPlainText -Force
+			$FromCreds = New-Object System.Management.Automation.PSCredential ($SourceMachineUserName, $FromPasswd)
+			$FromSession= new-pssession $machine -credential $FromCreds
+			$FromSessions += $FromSession
+		}
 	}
 	if ($IsForce)
 	{
@@ -110,7 +116,10 @@ try
 				exit 1
 			}
 		}
-		Invoke-Command -Session $FromSession -Scriptblock $Scriptblock -ArgumentList $Path,$params
+		foreach ($session in $FromSessions)
+		{
+			Invoke-Command -Session $session -Scriptblock $Scriptblock -ArgumentList $Path,$params
+		}
 		get-pssession | remove-pssession
 	}
 }
