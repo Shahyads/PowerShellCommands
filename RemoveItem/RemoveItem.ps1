@@ -1,19 +1,27 @@
 [cmdletbinding()]
-param
-(
-   [Parameter(Mandatory=$false)][string] $Path,
-   [Parameter(Mandatory=$false)][string] $RemoveFromAgentMachine,
-   [Parameter(Mandatory=$false)][string] $SourceMachineName,
-   [Parameter(Mandatory=$false)][string] $SourceMachineUserName,
-   [Parameter(Mandatory=$false)][string] $SourceMachinePassword,
-   
-   [Parameter(Mandatory=$false)][string] $Force,
-   [Parameter(Mandatory=$false)][string] $Filter,
-   [Parameter(Mandatory=$false)][string] $Include,
-   [Parameter(Mandatory=$false)][string] $Exclude,
-   [Parameter(Mandatory=$false)][string] $Recurse,
-   [Parameter(Mandatory=$false)][string] $WhatIf
-)
+param()
+
+Trace-VstsEnteringInvocation $MyInvocation
+
+try {
+	Import-VstsLocStrings "$PSScriptRoot\Task.json" 
+	[string]$Path = Get-VstsInput -Name Path
+	[string]$RemoveFromAgentMachine = Get-VstsInput -Name RemoveFromAgentMachine
+	[string]$SourceMachineName = Get-VstsInput -Name SourceMachineName
+	[string]$SourceMachineUserName = Get-VstsInput -Name SourceMachineUserName
+	[string]$SourceMachinePassword = Get-VstsInput -Name SourceMachinePassword
+
+	[string]$Force = Get-VstsInput -Name Force
+	[string]$Filter = Get-VstsInput -Name Filter
+	[string]$Include = Get-VstsInput -Name Include
+	[string]$Exclude = Get-VstsInput -Name Exclude
+	[string]$Recurse = Get-VstsInput -Name Recurse
+	[string]$WhatIf = Get-VstsInput -Name WhatIf
+} 
+finally 
+{ 
+     Trace-VstsLeavingInvocation $MyInvocation 
+} 
 try
 {
 	# Display vars

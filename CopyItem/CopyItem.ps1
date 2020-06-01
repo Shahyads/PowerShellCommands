@@ -1,27 +1,35 @@
 [cmdletbinding()]
-param
-(
-   [Parameter(Mandatory=$false)][string] $Path,
-   [Parameter(Mandatory=$false)][string] $CopyFromAgentMachine,
-   [Parameter(Mandatory=$false)][string] $SourceMachineName,
-   [Parameter(Mandatory=$false)][string] $SourceMachineUserName,
-   [Parameter(Mandatory=$false)][string] $SourceMachinePassword,
-   
-   [Parameter(Mandatory=$false)][string] $Destination,
-   [Parameter(Mandatory=$false)][string] $CopyToAgentMachine,
-   [Parameter(Mandatory=$false)][string] $TargetMachineName,
-   [Parameter(Mandatory=$false)][string] $TargetMachineUserName,
-   [Parameter(Mandatory=$false)][string] $TargetMachinePassword,
+param()
 
-   [Parameter(Mandatory=$false)][string] $Container,
-   [Parameter(Mandatory=$false)][string] $Force,
-   [Parameter(Mandatory=$false)][string] $Filter,
-   [Parameter(Mandatory=$false)][string] $Include,
-   [Parameter(Mandatory=$false)][string] $Exclude,
-   [Parameter(Mandatory=$false)][string] $Recurse,
-   [Parameter(Mandatory=$false)][string] $PassThru,
-   [Parameter(Mandatory=$false)][string] $WhatIf
-)
+Trace-VstsEnteringInvocation $MyInvocation
+
+try {
+	Import-VstsLocStrings "$PSScriptRoot\Task.json" 
+	[string]$Path = Get-VstsInput -Name Path
+	[string]$CopyFromAgentMachine = Get-VstsInput -Name CopyFromAgentMachine 
+	[string]$SourceMachineName = Get-VstsInput -Name SourceMachineName
+	[string]$SourceMachineUserName = Get-VstsInput -Name SourceMachineUserName
+	[string]$SourceMachinePassword = Get-VstsInput -Name SourceMachinePassword
+
+	[string]$Destination = Get-VstsInput -Name Destination
+	[string]$CopyToAgentMachine = Get-VstsInput -Name CopyToAgentMachine
+	[string]$TargetMachineName = Get-VstsInput -Name TargetMachineName
+	[string]$TargetMachineUserName = Get-VstsInput -Name TargetMachineUserName
+	[string]$TargetMachinePassword = Get-VstsInput -Name TargetMachinePassword
+
+	[string]$Container = Get-VstsInput -Name Container
+	[string]$Force = Get-VstsInput -Name Force
+	[string]$Filter = Get-VstsInput -Name Filter
+	[string]$Include = Get-VstsInput -Name Include
+	[string]$Exclude = Get-VstsInput -Name Exclude
+	[string]$Recurse = Get-VstsInput -Name Recurse
+	[string]$PassThru = Get-VstsInput -Name PassThru
+	[string]$WhatIf = Get-VstsInput -Name WhatIf
+} 
+finally 
+{ 
+     Trace-VstsLeavingInvocation $MyInvocation 
+} 
 try
 {
 	# Display vars

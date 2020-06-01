@@ -1,11 +1,20 @@
 [CmdletBinding()]
-param(
-    [ValidateSet("Start","Stop")][String] $Action,
-    [Parameter(Mandatory=$true)][String] $ServiceName,
-    [Parameter(Mandatory=$true)][string] $UserName,
-    [Parameter(Mandatory=$true)][string] $Password,
-    [Parameter(Mandatory=$true)][string] $MachineNameslist
-)
+param()
+
+Trace-VstsEnteringInvocation $MyInvocation
+
+try {
+	Import-VstsLocStrings "$PSScriptRoot\Task.json" 
+	[string]$Action = Get-VstsInput -Name Action #"Start","Stop"
+	[string]$ServiceName = Get-VstsInput -Name ServiceName
+	[string]$UserName = Get-VstsInput -Name UserName
+	[string]$Password = Get-VstsInput -Name Password
+	[string]$MachineNameslist = Get-VstsInput -Name MachineNameslist
+} 
+finally 
+{ 
+     Trace-VstsLeavingInvocation $MyInvocation 
+} 
 
 	# Display vars
 	Write-Host "ASSIGNED PARAMETER VALUES:"

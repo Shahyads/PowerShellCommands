@@ -14,7 +14,7 @@
   "version": {
     "Major": "1",
     "Minor": "0",
-    "Patch": "4"
+    "Patch": "5"
   },
   "groups": [
     {
@@ -172,7 +172,7 @@
   ],
   "instanceNameFormat": "Copy",
   "execution": {
-    "PowerShell": {
+    "PowerShell3": {
       "target": "$(currentDirectory)\\CopyItem.ps1",
       "argumentFormat": "",
       "workingDirectory": "$(currentDirectory)"

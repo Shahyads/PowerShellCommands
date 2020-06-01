@@ -15,7 +15,7 @@
   "version": {
     "Major": "1",
     "Minor": "0",
-    "Patch": "5"
+    "Patch": "6"
   },
   "groups": [
     {
@@ -115,7 +115,7 @@
   ],
   "instanceNameFormat": "Remove",
   "execution": {
-    "PowerShell": {
+    "PowerShell3": {
       "target": "$(currentDirectory)\\RemoveItem.ps1",
       "argumentFormat": "",
       "workingDirectory": "$(currentDirectory)"
