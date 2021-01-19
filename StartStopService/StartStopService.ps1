@@ -70,6 +70,7 @@ $securePassword = "$Password" | ConvertTo-SecureString -AsPlainText -Force
 $authCredentials = New-Object System.Management.Automation.PSCredential($UserName, $securePassword)
 
 $MachineNameslist  = $MachineNameslist  -replace " ",""
+$MachineNameslist  = $MachineNameslist  -replace ",",";"
 $Machines = $MachineNameslist  -split ";"
 foreach($machine in $Machines) 
 {
