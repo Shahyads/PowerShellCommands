@@ -12,7 +12,7 @@
   "version": {
     "Major": 1,
     "Minor": 0,
-    "Patch": 9
+    "Patch": 10
   },
   "instanceNameFormat": "Start/Stop Service $(ServiceName)",
   "inputs": [
@@ -54,7 +54,7 @@
     {
       "name": "MachineNameslist",
       "type": "string",
-      "label": "semicolon separated list of machine names",
+      "label": "comma/semicolon separated list of machine names",
       "defaultValue": "",
       "required": true,
       "helpMarkDown": "Name of the machines where the service is there (e.g. serverName1;serverName2;serverName3)"
